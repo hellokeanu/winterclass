@@ -4,5 +4,8 @@ from Famous import views
 
 
 urlpatterns = [
-    path('', views.index, name='index')
+    path('', views.index, name='index'),
+    path('restaurantDetail/', views.restaurantDetail, name='index'),
+    path('restaurantCreate/', views.restaurantCreate, name='index'),
+    path('categoryCreate/', views.categoryCreate, name='index'),
 ]
