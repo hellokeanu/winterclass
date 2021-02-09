@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from Famous.models import Category
+from Famous.models import Category, Restaurant
 from django.urls import reverse
 
 def index(request):
@@ -17,7 +17,29 @@ def restaurantDetail(request):
 
 def restaurantCreate(request):
     ## return HttpResponse("Hello")
-    return render(request, 'Famous/restaurantCreate.html')
+    categories = Category.objects.all()
+    content = {'categories': categories}
+    return render(request, 'Famous/restaurantCreate.html',content)
+
+def Create_restaurant(request):
+
+    category_id = request.POST['resCategory']
+    resName = request.POST['resTitle']
+    resLink = request.POST['resLink']
+    resContent = request.POST['resContent']
+    resLoc = request.POST['resLoc']
+
+    new_Res = Restaurant(category=Category.objects.get(id=category_id),
+                         restaurant_name=resName,
+                         restaurant_link=resLink,
+                         restaurant_content=resContent,
+                         restaurant_keyword=resLoc)
+
+    new_Res.save()
+    #return HttpResponse("Create_Restaurant")
+    return HttpResponseRedirect(reverse('index'))
+
+
 
 
 # 만들자고 보여지는 상황을 만드어 준다
@@ -34,3 +56,9 @@ def Create_Category(request):
     new_categroy.save()
     return HttpResponseRedirect(reverse('index'))
 
+
+def Delete_category(request):
+    category_id=request.POST['categoryId']
+    delete_category = Category.objects.get(id=category_id)
+    delete_category.delete()
+    return HttpResponseRedirect(reverse('index'))
