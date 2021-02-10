@@ -101,13 +101,37 @@ def WorkR(request):
     WorkList2=pd.merge(WorkList,HumanList2,how='left', on=['human_id'])
     WorkList2=WorkList2.drop(columns='human_id')
 
-
-
     result = WorkList.to_html()
     #result = FieldList.to_json(orient="split", force_ascii=False)
     return HttpResponse(result)
 
 
+
+
+def StatR(request):
+    # query=request.GET['year']
+    query = request.GET
+    WorkList = WorkReader(query)
+    FieldList = FieldReader(query)
+    TaskList = TaskReader(query)
+    HumanList = HuamnReader(query)
+
+    HumanList2=HumanList.rename(columns={'id': 'human_id'})
+    WorkList2=pd.merge(WorkList,HumanList2,how='left', on=['human_id'])
+    WorkList2=WorkList2.drop(columns='human_id')
+
+    Index = ['year','month']
+    Value = ['count','extend']
+    WorkList3 = pd.pivot_table(WorkList2, index=Index, values=Value, aggfunc=sum)
+    #WorkList3 = pd.pivot_table(WorkList2, index=Index, values=Value, aggfunc=lambda x: len(x.unique()))
+    #WorkList3 = pd.pivot_table(WorkList2, index=Index, values=Value, aggfunc=len)
+    #FieldDay3 = pd.pivot_table(WorkList2, index=Index, values=['사번'], aggfunc=lambda x: len(x.unique()))
+    #WorkList3 = WorkList3.reset_index()
+
+
+    result = WorkList3.to_html()
+    #result = FieldList.to_json(orient="split", force_ascii=False)
+    return HttpResponse(result)
 
 
 

@@ -7,6 +7,7 @@ urlpatterns = [
 
     path('FieldR/', views.FieldR, name='FieldR'),
     path('WorkR/', views.WorkR, name='WorkR'),
+    path('StatR/', views.StatR, name='WorkR'),
 
 
     # path('', views.index, name='index'),
