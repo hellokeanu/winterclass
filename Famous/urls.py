@@ -4,6 +4,9 @@ from Famous import views
 
 
 urlpatterns = [
+
+    path('FieldR/', views.FieldR, name='FieldR'),
+
     path('', views.index, name='index'),
     path('restaurantDetail/', views.restaurantDetail, name='restaurantDetail'),
     path('restaurantCreate/', views.restaurantCreate, name='restaurantCreate'),
@@ -11,4 +14,8 @@ urlpatterns = [
     path('categoryCreate/', views.categoryCreate, name='categoryCreate'),
     path('categoryCreate/create', views.Create_Category, name='Create_Category'),
     path('categoryCreate/delete', views.Delete_category, name='Delete_category'),
+
+
+
+
 ]

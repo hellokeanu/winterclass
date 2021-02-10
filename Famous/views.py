@@ -1,7 +1,45 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from Famous.models import Category, Restaurant
+from Famous.models import Field, Human, Task, Work
 from django.urls import reverse
+import pandas as pd
+from django.db import DefaultConnectionProxy
+connection = DefaultConnectionProxy()
+import json
+
+def FieldReader(query):
+    newquery={}
+    for key in list(query.keys()):
+        if key in ['year', 'fieldname']:
+            if query[key]:
+                newquery[key] = query[key]
+    # Quering
+    newquery = str(Field.objects.all().filter(**newquery).query)
+    FieldList = pd.read_sql_query(newquery, connection)
+    print(FieldList)
+
+    return FieldList
+
+
+def FieldR(request):
+    # query=request.GET['year']
+    query = request.GET
+    FieldList=FieldReader(query)
+    result = FieldList.to_html()
+    #result = FieldList.to_json(orient="split", force_ascii=False)
+    return HttpResponse(result)
+
+
+
+
+
+
+
+
+
+
+
+
 
 def index(request):
     #query=request.GET['category']
